@@ -12,6 +12,7 @@ const mapDispatchToProps = (dispatch) => {
             register: authActions.register,
             setRegisterError: authActions.setRegisterError,
             resetCaptcha: authActions.resetCaptcha,
+            setIsLoading: authActions.setIsLoading,
         },
         dispatch,
     )
@@ -20,6 +21,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => ({
     registerError: authSelectors.getRegisterError(state),
     captcha: authSelectors.getCaptcha(state),
+    isLoading: authSelectors.getIsLoading(state),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexView)

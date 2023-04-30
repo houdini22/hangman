@@ -1,15 +1,16 @@
 import { connect } from 'react-redux'
 import { IndexView } from '../components/Index'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 import {
     selectors as authSelectors,
     actions as authActions,
 } from '../../../reducers/auth'
+import { withRouter } from '../../../helpers/router'
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators(
         {
-            setLoginError: authActions.setLoginError,
+            activateAccount: authActions.activateAccount,
             setIsLoading: authActions.setIsLoading,
         },
         dispatch,
@@ -17,8 +18,10 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => ({
-    loginError: authSelectors.getLoginError(state),
     isLoading: authSelectors.getIsLoading(state),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(IndexView)
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps),
+)(IndexView)

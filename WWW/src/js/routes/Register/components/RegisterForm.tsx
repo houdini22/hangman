@@ -30,7 +30,7 @@ export class RegisterForm extends React.Component<null, null> {
                     autoComplete="off"
                 />
                 <Field
-                    name="confirm_email"
+                    name="email_confirmation"
                     component={FormField}
                     type="text"
                     placeholder="Confirm email"
@@ -44,14 +44,14 @@ export class RegisterForm extends React.Component<null, null> {
                     autoComplete="off"
                 />
                 <Field
-                    name="confirm_password"
+                    name="password_confirmation"
                     component={FormField}
                     type="password"
                     placeholder="Confirm password"
                     autoComplete="off"
                 />
                 <Field
-                    name="captcha_image"
+                    name="_captcha"
                     component={FormField}
                     type="html"
                     htmlAfter={
@@ -63,7 +63,7 @@ export class RegisterForm extends React.Component<null, null> {
                         return (
                             <div>
                                 <img
-                                    className={cx('contact-form__captcha')}
+                                    className={cx('register-form__captcha')}
                                     src={apiURL(`captcha/math?${captcha}`)}
                                     alt={''}
                                     onClick={() => {

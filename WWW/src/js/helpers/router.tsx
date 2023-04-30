@@ -18,3 +18,14 @@ export const withRouter = (Component) => {
 
     return ComponentWithRouterProp
 }
+
+export const getParamsFromSearch = (search) => {
+    const params = {}
+    search
+        .replace(/^\?/, '')
+        .split('&')
+        .forEach((param) => {
+            params[param.split('=')[0]] = param.split('=')[1]
+        })
+    return params
+}

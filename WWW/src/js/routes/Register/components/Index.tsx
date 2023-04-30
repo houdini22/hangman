@@ -3,7 +3,8 @@ import styles from '../../../../assets/scss/routes/register.scss'
 import classNames from 'classnames/bind'
 import { Container } from '../../../components/ui/Container'
 import { RegisterFormContainer } from '../containers/RegisterFormContainer'
-import { Alert, Card } from '../../../components'
+import { Alert, Button, Card, LoadingOverlay } from '../../../components'
+import { RouteManager } from '../../../containers/RouteManager'
 const cx = classNames.bind(styles)
 
 interface RegisterProps {
@@ -12,6 +13,8 @@ interface RegisterProps {
     setRegisterError: Function
     captcha: number
     resetCaptcha: Function
+    isLoading: boolean
+    setIsLoading: Function
 }
 
 class IndexView extends React.Component<RegisterProps, null> {
@@ -22,23 +25,46 @@ class IndexView extends React.Component<RegisterProps, null> {
             setRegisterError,
             captcha,
             resetCaptcha,
+            setIsLoading,
+            isLoading,
+            navigate,
         } = this.props
 
         return (
             <div className={cx('route--register')}>
-                <Container>
-                    <Card>
-                        {success === false && (
-                            <Alert color={'danger'}>{message}</Alert>
-                        )}
-                        <RegisterFormContainer
-                            register={register}
-                            setRegisterError={setRegisterError}
-                            captcha={captcha}
-                            resetCaptcha={resetCaptcha}
-                        />
-                    </Card>
-                </Container>
+                <RouteManager>
+                    {({ navigate }) => (
+                        <Container>
+                            <Card>
+                                {success === false && (
+                                    <Alert color={'danger'}>{message}</Alert>
+                                )}
+                                {success === true && (
+                                    <Alert color={'success'}>{message}</Alert>
+                                )}
+                                {!success && (
+                                    <>
+                                        <RegisterFormContainer
+                                            register={register}
+                                            setRegisterError={setRegisterError}
+                                            captcha={captcha}
+                                            resetCaptcha={resetCaptcha}
+                                            setIsLoading={setIsLoading}
+                                        />
+                                        <Button
+                                            block
+                                            color={'secondary'}
+                                            onClick={() => navigate('/')}
+                                        >
+                                            Go Back
+                                        </Button>
+                                    </>
+                                )}
+                                {isLoading && <LoadingOverlay />}
+                            </Card>
+                        </Container>
+                    )}
+                </RouteManager>
             </div>
         )
     }

@@ -6,10 +6,14 @@ import { processAPIerrorResponseToFormErrors } from '../../../modules/http'
 const onSubmit = (
     values,
     dispatch,
-    { register, setRegisterError, resetCaptcha },
+    { register, setRegisterError, resetCaptcha, setIsLoading },
 ) => {
+    setRegisterError(null, null)
+    setIsLoading(true)
+
     return register(values).then(
         () => {
+            setIsLoading(false)
             setRegisterError(
                 true,
                 'Your account was created. Now activate it by clicking link in email.',
@@ -22,6 +26,7 @@ const onSubmit = (
         }) => {
             resetCaptcha()
             setRegisterError(false, message)
+            setIsLoading(false)
             throw new SubmissionError(
                 processAPIerrorResponseToFormErrors(errors),
             )
@@ -39,9 +44,10 @@ const RegisterFormContainer = compose(
         initialValues: {
             name: '',
             email: '',
-            confirm_email: '',
+            email_confirmation: '',
             password: '',
-            confirm_password: '',
+            password_confirmation: '',
+            captcha: '',
         },
     }),
 )(RegisterForm)

@@ -8,6 +8,7 @@ export const LOGGED_OFF = 'auth::logged_off'
 export const SET_LOGIN_ERROR = 'auth::set_login_error'
 export const SET_REGISTER_ERROR = 'auth::set_register_error'
 export const RESET_CAPTCHA = 'auth::reset_captcha'
+export const SET_IS_LOADING = 'auth::set_is_loading'
 
 // ------------------------------------
 // Actions
@@ -35,8 +36,9 @@ const setRegisterError = (success, message) => (dispatch) => {
 }
 
 const login = (email, password) => (dispatch) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         dispatch(setLoginError(false))
+        dispatch(setIsLoading(true))
 
         http.post('/auth/login', {
             email,
@@ -45,20 +47,39 @@ const login = (email, password) => (dispatch) => {
             .then((response) => {
                 dispatch(loggedIn(response.data.data.user))
                 setAuthToken(response.data.data.user.token)
+                dispatch(setIsLoading(false))
                 resolve(response.data.data.user)
             })
-            .catch(() => {
-                dispatch(setLoginError(true))
-            })
+            .catch(
+                ({
+                    response: {
+                        data: { message },
+                    },
+                }) => {
+                    dispatch(setIsLoading(false))
+                    reject({ message })
+                },
+            )
     })
 }
 const register = (values) => (dispatch) => {
     return new Promise((resolve, reject) => {
         http.post('/auth/register', values)
             .then((response) => {
-                dispatch(loggedIn(response.data.data.user))
-                setAuthToken(response.data.data.user.token)
-                resolve(response.data.data.user)
+                resolve(response.data)
+            })
+            .catch((e) => {
+                reject(e)
+            })
+    })
+}
+const activateAccount = (token) => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        http.post(`/auth/activate_account`, {
+            token,
+        })
+            .then((response) => {
+                resolve(response.data)
             })
             .catch((e) => {
                 reject(e)
@@ -82,6 +103,10 @@ const resetCaptcha = () => (dispatch) => {
     })
 }
 
+const setIsLoading = (value) => (dispatch) => {
+    dispatch({ type: SET_IS_LOADING, payload: value })
+}
+
 export const actions = {
     loggedIn,
     loggedOff,
@@ -91,6 +116,8 @@ export const actions = {
     register,
     setRegisterError,
     resetCaptcha,
+    setIsLoading,
+    activateAccount,
 }
 
 // ------------------------------------
@@ -132,6 +159,12 @@ const ACTION_HANDLERS = {
             captcha: Math.random(),
         }
     },
+    [SET_IS_LOADING]: (state, { payload }) => {
+        return {
+            ...state,
+            isLoading: payload,
+        }
+    },
 }
 
 // ------------------------------------
@@ -144,6 +177,7 @@ const getInitialState = () => ({
     loginError: false,
     registerError: {},
     captcha: Math.random(),
+    isLoading: false,
 })
 
 export default function userReducer(state = getInitialState(), action) {
@@ -159,6 +193,7 @@ const getLoginError = (state) => getState(state)['loginError']
 const getUser = (state) => getState(state)['user']
 const getRegisterError = (state) => getState(state)['registerError']
 const getCaptcha = (state) => getState(state)['captcha']
+const getIsLoading = (state) => getState(state)['isLoading']
 
 export const selectors = {
     getState,
@@ -167,4 +202,5 @@ export const selectors = {
     getUser,
     getRegisterError,
     getCaptcha,
+    getIsLoading,
 }

@@ -21,8 +21,7 @@ const setAuthToken = (token) => {
     instance.defaults.headers.common['X-SESSION-TOKEN'] = token
 }
 
-const processAPIerrorResponseToFormErrors = (response) => {
-    const { response: { data: { errors = {} } = {} } = {} } = response
+const processAPIerrorResponseToFormErrors = (errors) => {
     const res = {}
 
     Object.keys(errors).forEach((key) => {

@@ -2,10 +2,11 @@ import * as React from 'react'
 import { Routes, HashRouter as Router, Route } from 'react-router-dom'
 import { BlankPageLayout } from './layouts'
 
-import { IndexView } from './routes/Index'
+import { IndexContainer as LoginView } from './routes/Index'
 import { IndexView as HangmanView } from './routes/Hangman'
 import { IndexContainer as HangmanGameView } from './routes/HangmanGame'
 import { IndexContainer as RegisterContainer } from './routes/Register'
+import { IndexContainer as ActivateAccount } from './routes/ActivateAccount'
 
 const App = () => (
     <Router>
@@ -14,7 +15,7 @@ const App = () => (
                 path="/"
                 element={
                     <BlankPageLayout>
-                        <IndexView />
+                        <LoginView />
                     </BlankPageLayout>
                 }
             />
@@ -39,6 +40,14 @@ const App = () => (
                 element={
                     <BlankPageLayout>
                         <RegisterContainer />
+                    </BlankPageLayout>
+                }
+            />
+            <Route
+                path="/activate_account"
+                element={
+                    <BlankPageLayout>
+                        <ActivateAccount />
                     </BlankPageLayout>
                 }
             />
