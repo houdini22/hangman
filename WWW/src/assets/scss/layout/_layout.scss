@@ -5,10 +5,8 @@
     height: 100%;
     background: $BACKGROUND_COLOR;
     min-height: 100vh;
-    color: $default;
-}
+    color: $defaultTextColor;
 
-.layout {
     .toolbar {
         text-align: right;
         padding-top: 10px;
@@ -22,4 +20,7 @@
             margin-left: 15px;
         }
     }
+}
+
+.layout {
 }

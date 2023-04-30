@@ -5,6 +5,7 @@ import { Container } from '../../../components/ui/Container'
 import { Button, Card } from '../../../components'
 import { RouteManager } from '../../../containers/RouteManager'
 import { Scores } from './Scores'
+import { Statistics } from './Statistics'
 
 const cx = classNames.bind(styles)
 
@@ -24,6 +25,9 @@ class IndexView extends React.Component<null, null> {
                             </Button>
                             <Card header={<h1>Scores</h1>}>
                                 <Scores />
+                            </Card>
+                            <Card header={<h1>Your Statistics</h1>}>
+                                <Statistics />
                             </Card>
                         </Container>
                     </div>

@@ -12,6 +12,7 @@ Route::prefix('api/v1')->group(function () {
 
     Route::post('hangman/end_game', '\App\Http\Controllers\HangmanController@postEndGame');
     Route::get('hangman/scores', '\App\Http\Controllers\HangmanController@getScores');
+    Route::get('hangman/my_statistics', '\App\Http\Controllers\HangmanController@getMyStatistics');
 });
 
 Route::get('/', function () {
