@@ -1,0 +1,32 @@
+@import '../_variables.scss';
+
+.route--hangman-game {
+    .word {
+        text-align: center;
+
+        input[type='text'] {
+            width: 30px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    }
+    .image {
+        margin-bottom: 50px;
+        position: relative;
+
+        img {
+            max-width: 100%;
+        }
+    }
+    .timer {
+        text-align: right;
+    }
+    .keyboard {
+        text-align: center;
+
+        & > * {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    }
+}
