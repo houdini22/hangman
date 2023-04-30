@@ -59,13 +59,11 @@ class HangmanController extends Controller
                 $q->on('hangman_scores.user_id', '=' ,'users.id');
             })
             ->whereRaw(DB::raw($where))
-            ->orderBy($request->get('sort_by'), $request->get('sort_direction'))
-            ->paginate(5);
+            ->orderBy($filters['order_by'], $filters['order_direction'])
+            ->paginate($filters['items_per_page']);
 
         return response()->json([
-            'data' => [
-                'scores' => $scores->toArray(),
-            ]
+            'data' => $scores->toArray()
         ]);
     }
 
@@ -86,7 +84,7 @@ class HangmanController extends Controller
 
         return response()->json([
             'data' => [
-                'statistics' => $scores->toArray(),
+                'statistics' => $scores ? $scores->toArray() : [],
             ]
         ]);
     }

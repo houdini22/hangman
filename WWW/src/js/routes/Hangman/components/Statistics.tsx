@@ -45,13 +45,13 @@ class Statistics extends React.Component<null, null> {
         const {
             isLoading,
             statistics: {
-                duration = '-',
-                letters_guessed = '-',
-                max_duration = '-',
-                max_length = '-',
-                max_points = '-',
-                points = '-',
-                games_played = '-',
+                duration = 0,
+                letters_guessed = 0,
+                max_duration = 0,
+                max_length = 0,
+                max_points = 0,
+                points = 0,
+                games_played = 0,
             },
         } = this.state
         return (

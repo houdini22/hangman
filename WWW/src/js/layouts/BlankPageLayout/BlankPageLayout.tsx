@@ -1,9 +1,8 @@
 import * as React from 'react'
 import classNames from 'classnames/bind'
 import styles from '../../../assets/scss/layout/_layout.scss'
-import { Button, Dropdown, Modal } from '../../components'
+import { Button, Col, Dropdown, Modal, Row } from '../../components'
 import { RouteManager } from '../../containers/RouteManager'
-
 const cx = classNames.bind(styles)
 
 interface BlankPageLayoutProps {
@@ -22,7 +21,7 @@ class BlankPageLayout extends React.Component<BlankPageLayoutProps, null> {
         const {
             children,
             logoff,
-            user: { email },
+            user: { email, avatar },
             isLoggedIn,
             setConnectionErrorModalVisible,
             connectionError,
@@ -39,31 +38,53 @@ class BlankPageLayout extends React.Component<BlankPageLayoutProps, null> {
                     >
                         <div className={cx('toolbar')}>
                             {isLoggedIn && (
-                                <>
-                                    <Dropdown.Container placement={'right'}>
-                                        <Dropdown.Trigger component={Button}>
-                                            {email}
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item
-                                                onClick={() => {
-                                                    navigate('/change_password')
-                                                }}
+                                <Row>
+                                    <Col xs={6} className={cx('toolbar--left')}>
+                                        <Button
+                                            className={cx('button--start-game')}
+                                            onClick={() =>
+                                                navigate('/hangman-game')
+                                            }
+                                        >
+                                            Start Game
+                                        </Button>
+                                    </Col>
+                                    <Col
+                                        xs={6}
+                                        className={cx('toolbar--right')}
+                                    >
+                                        <Dropdown.Container placement={'right'}>
+                                            <Dropdown.Trigger
+                                                component={Button}
                                             >
-                                                Change password
-                                            </Dropdown.Item>
-                                            <Dropdown.Item
-                                                onClick={() => {
-                                                    logoff().then(() => {
-                                                        navigate('/')
-                                                    })
-                                                }}
-                                            >
-                                                Logout
-                                            </Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown.Container>
-                                </>
+                                                {email}
+                                            </Dropdown.Trigger>
+                                            <Dropdown.Menu>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        navigate(
+                                                            '/change_password',
+                                                        )
+                                                    }}
+                                                >
+                                                    Change password
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        logoff().then(() => {
+                                                            navigate('/')
+                                                        })
+                                                    }}
+                                                >
+                                                    Logout
+                                                </Dropdown.Item>
+                                            </Dropdown.Menu>
+                                        </Dropdown.Container>
+                                        <div className={cx('toolbar__avatar')}>
+                                            <img src={avatar} alt="" />
+                                        </div>
+                                    </Col>
+                                </Row>
                             )}
                         </div>
                         {children}

@@ -8,16 +8,25 @@
     color: $defaultTextColor;
 
     .toolbar {
-        text-align: right;
-        padding-top: 10px;
-        padding-right: 10px;
-        height: 50px;
+        padding: 15px;
         width: 100%;
         line-height: 50px;
 
-        & > * {
-            display: inline-block;
-            margin-left: 15px;
+        .toolbar--left {
+        }
+
+        .toolbar--right {
+            text-align: right;
+            & > * {
+                display: inline-block;
+                margin-left: 15px;
+            }
+        }
+
+        .toolbar__avatar {
+            img {
+                border-radius: 1000px;
+            }
         }
     }
 }

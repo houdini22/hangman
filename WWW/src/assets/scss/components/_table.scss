@@ -97,6 +97,11 @@
         }
     }
 
+    & > .component-table__tfoot {
+        width: 100%;
+        text-align: right;
+    }
+
     &.component-table--bordered {
         & > .component-table__thead {
             & > .component-table__tr {

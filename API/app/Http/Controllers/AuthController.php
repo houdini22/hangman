@@ -34,6 +34,7 @@ class AuthController extends Controller
                         'name' => $user->name,
                         'email' => $user->email,
                         'token' => $user->token,
+                        'avatar' => "https://www.gravatar.com/avatar/" . md5(strtolower($user->email)) . '?s=40'
                     ]
                 ]
             ]);

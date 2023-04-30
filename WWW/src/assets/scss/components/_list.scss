@@ -1,0 +1,29 @@
+@import '../variables';
+
+.filter {
+    & > span:nth-child(1) {
+        height: 31px;
+        line-height: 31px;
+        min-width: 150px;
+        display: inline-block;
+    }
+
+    & > *:not(span:nth-child(1)) {
+        margin-right: 5px;
+    }
+}
+
+.pagination {
+    margin-top: 15px;
+
+    .pages {
+        text-align: center;
+    }
+}
+
+.filters {
+    margin-bottom: 15px;
+    & > * {
+        margin-bottom: 5px;
+    }
+}

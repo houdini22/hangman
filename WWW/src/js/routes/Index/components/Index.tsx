@@ -21,18 +21,20 @@ class IndexView extends React.Component<IndexViewProps, null> {
         return (
             <div className={cx('route--index')}>
                 <Container>
-                    <RouteManager>
-                        {({ navigate }) => (
-                            <LoginFormContainer
-                                button
-                                navigate={navigate}
-                                setLoginError={setLoginError}
-                                loginError={loginError}
-                                isLoading={isLoading}
-                                setIsLoading={setIsLoading}
-                            />
-                        )}
-                    </RouteManager>
+                    <div className={cx('route--index__login-form')}>
+                        <RouteManager>
+                            {({ navigate }) => (
+                                <LoginFormContainer
+                                    button
+                                    navigate={navigate}
+                                    setLoginError={setLoginError}
+                                    loginError={loginError}
+                                    isLoading={isLoading}
+                                    setIsLoading={setIsLoading}
+                                />
+                            )}
+                        </RouteManager>
+                    </div>
                 </Container>
             </div>
         )
