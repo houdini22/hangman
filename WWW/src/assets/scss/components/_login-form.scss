@@ -1,24 +1,5 @@
 @import '../variables';
 
-.login {
-    width: 200px;
-    height: 300px;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
-    position: relative;
-    text-align: left;
-
-    form {
-        margin-bottom: 0;
-        height: 100%;
-
-        .form-field {
-            margin-bottom: 20px;
-        }
-    }
-}
-
 .login__field {
     margin-bottom: 15px;
 }

@@ -24,6 +24,8 @@ const mapStateToProps = (state) => ({
     mistakes: hangmanSelectors.getMistakes(state),
     duration: hangmanSelectors.getDuration(state),
     won: hangmanSelectors.getWon(state),
+    pointsToWin: hangmanSelectors.getPointsToWin(state),
+    pointsToLoose: hangmanSelectors.getPointsToLoose(state),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexView)

@@ -17,8 +17,9 @@ class ModalLoose extends React.Component<ModalLooseProps, null> {
                         <Modal.Body>
                             <Alert color={'danger'}>You Loose!</Alert>
                             <p>
-                                The correct word was <b>{word}</b>
+                                The correct word was <b>{word}</b>.
                             </p>
+                            <p>You've lost points.</p>
                             <Button
                                 block
                                 onClick={() => {

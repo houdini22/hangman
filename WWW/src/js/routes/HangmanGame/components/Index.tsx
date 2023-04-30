@@ -2,10 +2,6 @@ import * as React from 'react'
 import styles from '../../../../assets/scss/routes/hangman-game.scss'
 import classNames from 'classnames/bind'
 import { Container } from '../../../components/ui/Container'
-import { Alert, Button, Modal } from '../../../components'
-import { RouteManager } from '../../../containers/RouteManager'
-import { BsInfoCircle as InfoIcon } from 'react-icons/bs'
-import { WordFormContainer } from '../containers/WordFormContainer'
 import { Word } from './Word'
 import { Image } from './Image'
 import { Timer } from './Timer'
@@ -24,11 +20,11 @@ interface HangmanProps {
     duration: number
     won: boolean | null
     reset: Function
+    pointsToWin: number | null
+    pointsToLoose: number | null
 }
 
 class IndexView extends React.Component<HangmanProps, null> {
-    componentDidMount() {}
-
     render() {
         const {
             wordModalVisible,
@@ -40,12 +36,18 @@ class IndexView extends React.Component<HangmanProps, null> {
             guessLetter,
             won,
             reset,
+            pointsToWin,
+            pointsToLoose,
         } = this.props
 
         return (
             <div className={cx('route--hangman-game')}>
                 <Container>
-                    <Timer duration={duration} />
+                    <Timer
+                        duration={duration}
+                        pointsToWin={pointsToWin}
+                        pointsToLoose={pointsToLoose}
+                    />
                     <Image mistakes={mistakes} />
                     <Word word={word} guessWord={guessWord} />
                     <Keyboard guessLetter={guessLetter} />

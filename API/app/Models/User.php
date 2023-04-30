@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'nick',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -52,10 +52,23 @@ class User extends Authenticatable
         } while ($passed === false);
     }
 
+    public function generateActivationToken()
+    {
+        do {
+            $this->activation_token = Str::random(32);
+            $passed = true;
+            try {
+                $this->save();
+            } catch (\Exception $e) {
+                $passed = false;
+            }
+        } while ($passed === false);
+    }
+
     public static function getFromRequest(\Illuminate\Http\Request $request)
     {
         $token = $request->header('X-SESSION-TOKEN');
-        
+
         if ($token) {
             $user = \App\Models\User::where('token', '=', $token)->first();
             if ($user) {

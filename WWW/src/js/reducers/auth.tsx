@@ -50,16 +50,10 @@ const login = (email, password) => (dispatch) => {
                 dispatch(setIsLoading(false))
                 resolve(response.data.data.user)
             })
-            .catch(
-                ({
-                    response: {
-                        data: { message },
-                    },
-                }) => {
-                    dispatch(setIsLoading(false))
-                    reject({ message })
-                },
-            )
+            .catch(({ response: { data: { message } = {} } = {} }) => {
+                dispatch(setIsLoading(false))
+                reject({ message })
+            })
     })
 }
 const register = (values) => (dispatch) => {

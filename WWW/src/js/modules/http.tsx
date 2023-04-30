@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { actions as commonActions } from '../reducers/hangman'
+import { actions as commonActions } from '../reducers/common'
 import { store } from '../../index'
 import config from '../config'
 
@@ -11,8 +11,11 @@ const instance = axios.create({
 })
 
 instance.interceptors.response.use(undefined, (error) => {
-    if (error.message === 'Network Error') {
-        store.dispatch(setConnectionErrorModalVisible(true))
+    if (
+        error.message === 'Network Error' ||
+        error.code === 'ERR_BAD_RESPONSE'
+    ) {
+        store.dispatch(setConnectionErrorModalVisible(true, error))
     }
     return Promise.reject(error)
 })

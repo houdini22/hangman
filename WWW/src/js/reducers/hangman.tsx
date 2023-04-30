@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { clearInterval } from 'timers'
+import { http } from '../modules/http'
 
 // game helpers
 
@@ -25,6 +26,7 @@ export const INC_MISTAKES = 'hangman::inc_mistakes'
 export const INC_DURATION = 'hangman::inc_duration'
 export const END_GAME = 'hangman::end_game'
 export const RESET = 'hangman::reset'
+export const SET_POINTS_TO_WIN = 'hangman::reset'
 
 // actions
 let gameTimer = null
@@ -49,6 +51,9 @@ const incMistakes = () => (dispatch) => {
 const endGame = (win) => (dispatch) => {
     dispatch({ type: END_GAME, payload: win })
 }
+const setPointsToWin = (points) => (dispatch) => {
+    dispatch({ type: SET_POINTS_TO_WIN, payload: points })
+}
 
 const incDuration = () => (dispatch) => {
     dispatch({ type: INC_DURATION })
@@ -64,23 +69,40 @@ const guessLetter = (letter) => (dispatch, state) => {
         if (!word.match(new RegExp(`${letter.toLowerCase()}`, 'g'))) {
             dispatch(incMistakes())
 
-            const mistakes = state()['hangman']['mistakes']
+            const { mistakes, pointsToLoose, word, gameDuration } =
+                state()['hangman']
             if (mistakes === 8) {
-                dispatch(endGame(false))
+                http.post('/hangman/end_game', {
+                    points: -pointsToLoose,
+                    word,
+                    mistakes,
+                    duration: gameDuration,
+                }).then(() => {
+                    dispatch(endGame(false))
+                })
             }
         } else {
             const newGuessWord = word
                 .split('')
                 .map((l, i) => {
-                    if (letter.toLowerCase() === l) {
-                        return letter
+                    if (letter.toLowerCase() === l.toLowerCase()) {
+                        return letter.toUpperCase()
                     }
-                    return guessWord[i]
+                    return guessWord[i].toUpperCase()
                 })
                 .join('')
             dispatch({ type: SET_GUESS_WORD, payload: newGuessWord })
             if (newGuessWord.toLowerCase() === word.toLowerCase()) {
-                dispatch(endGame(true))
+                const { pointsToWin, mistakes, gameDuration } =
+                    state()['hangman']
+                http.post('/hangman/end_game', {
+                    points: pointsToWin,
+                    word,
+                    mistakes,
+                    duration: gameDuration,
+                }).then(() => {
+                    dispatch(endGame(true))
+                })
             }
         }
     }
@@ -101,6 +123,8 @@ const ACTION_HANDLERS = {
         return {
             ...state,
             word: payload,
+            pointsToWin: 20,
+            pointsToLoose: 5,
         }
     },
     [SET_WORD_MODAL_VISIBLE]: (state, { payload }) => {
@@ -119,19 +143,29 @@ const ACTION_HANDLERS = {
         return {
             ...state,
             mistakes: state.mistakes + 1,
+            pointsToWin: Math.max(1, state.pointsToWin - 1),
         }
     },
     [INC_DURATION]: (state) => {
         return {
             ...state,
             gameDuration: state.gameDuration + 1,
+            pointsToWin:
+                (state.gameDuration + 1) % 20 === 0
+                    ? state.pointsToWin - 1
+                    : state.pointsToWin,
         }
     },
     [END_GAME]: (state, { payload }) => {
         return {
             ...state,
             won: payload,
-            guessWord: '',
+        }
+    },
+    [SET_POINTS_TO_WIN]: (state, { payload }) => {
+        return {
+            ...state,
+            pointsToWin: payload,
         }
     },
     [RESET]: (state) => {
@@ -143,6 +177,8 @@ const ACTION_HANDLERS = {
             mistakes: 1,
             gameDuration: 0,
             wordModalVisible: true,
+            pointsToWin: -1,
+            pointsToLoose: -1,
         }
     },
 }
@@ -155,6 +191,8 @@ const initialState = {
     mistakes: 1,
     gameDuration: 0,
     won: null,
+    pointsToWin: null,
+    pointsToLoose: null,
 }
 
 export default function userReducer(state = initialState, action) {
@@ -171,6 +209,8 @@ const getGuessWord = (state) => getState(state)['guessWord']
 const getMistakes = (state) => getState(state)['mistakes']
 const getDuration = (state) => getState(state)['gameDuration']
 const getWon = (state) => getState(state)['won']
+const getPointsToLoose = (state) => getState(state)['pointsToLoose']
+const getPointsToWin = (state) => getState(state)['pointsToWin']
 
 export const selectors = {
     getState,
@@ -180,4 +220,6 @@ export const selectors = {
     getMistakes,
     getDuration,
     getWon,
+    getPointsToLoose,
+    getPointsToWin,
 }

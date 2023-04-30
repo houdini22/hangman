@@ -27,7 +27,6 @@ class IndexView extends React.Component<RegisterProps, null> {
             resetCaptcha,
             setIsLoading,
             isLoading,
-            navigate,
         } = this.props
 
         return (
